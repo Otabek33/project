@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Список продуктов</h4>
+                                <button type="button" class="btn btn-rounded btn-primary" data-toggle="modal" data-target="#addClient"><span
+                                    class="btn-icon-left text-primary"><i class="fa fa-plus color-primary"></i>
+                                </span>Добавить</button>
+                            </div>
+                            <div>
+                                
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="example" class="display text-center  " style="min-width: 845px">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>  
+                                                <th>Фото</th>  
+                                                <th>ID пользователя</th>
+                                                <th>Имя пользователя</th>
+                                                <th>Имя</th>
+                                                <th>Фамилия</th>
+                                                <th>Телефон</th>
+                                                <th scope="col">Действие</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center">
+                                            {% for client in client_list %}
+                                            
+                                            <tr >
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>    <img
+                                                    src="{{ client.photo.url }}"
+                                                    alt="user-avatar"
+                                                    class="d-block rounded"
+                                                    height="100"
+                                                    width="100"
+                                                    id="uploadedAvatar"
+                                            /> </td>
+                                                <td>{{ client.userId }}</td>
+                                                <td>{{ client.username }}</td>
+                                                <td>{{ client.first_name }}</td>
+                                                <td>{{ client.last_name }}</td>
+                                                <td>{{ client.phone }}</td>
+                                                <td class="text-center">
+                                                    <a type="button" class="btn btn-primary" href={% url 'clients:update' pk=client.uuid %} ><i
+                                                        class="fa fa-pencil color-muted"></i></a>
+                                <button type="button" class="btn btn-danger client_delete_button"
+                                data-client-id="{{ client.uuid }}"><i
+                                    class="fa fa-close color-danger"></i></button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="modal fade" id="addClient">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Добавить нового клиента</h5>
+                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card">
+                                 
+                                    <div class="card-body">
+                                        <div class="basic-form">
+                                            <form method="POST"  enctype="multipart/form-data">
+                                                {% csrf_token %}
+        
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label>Имя</label>
+                                                        {{ form.first_name}}
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Фамилия</label>
+                                                        {{ form.last_name }}
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label id="inputState">ID пользователя</label>
+                                                        {{ form.userId}}
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Имя пользователя</label>
+                                                        {{ form.username}}
+                                                    </div>
+                                                    
+                                                    <div class="form-group col-md-6">
+                                                        <label>Телефон</label>
+                                                        {{ form.phone}}
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Фото</label>
+                                                        {{ form.photo}}
+                                                    </div>
+                                                </div>
+                                    
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal " id="deleteClient"> 
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Вы действительно хотите удалить этот Клиент ?</h5>
+                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                </button>
+                            </div>
+                            
+                            <div class="modal-footer">
+                                <form method="post"
+                                >
+                                    {% csrf_token %}
+                                    <input type="hidden" name="client_delete_modal_input"
+                                           id="client_delete_id">
+                                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                            
+                                    <button type="button" class="btn btn-primary"
+                                            data-href-template="{% url 'clients:delete' %}"
+                                            id="client_delete_modal_button">Да
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="application/javascript">
+                   
+            
+                    document.addEventListener("DOMContentLoaded", function (event) {
+                        $('.client_delete_button').on('click', (e) => {
+                            document.getElementById('client_delete_id').value = e.target.dataset['clientId'];
+                            $('#deleteClient').modal('show');
+                        })
+                    });
+                    {% comment %} console.log(document.getElementById('client_delete_id').value) {% endcomment %}
+                    
+                   
+            
+            
+                </script>
+            
+
+    {% endblock %}
+    

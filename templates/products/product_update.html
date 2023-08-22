@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Обновить продукт</h4>
+    </div>
+    <div class="card-body">
+        <div class="basic-form">
+            <form method="post"  enctype="multipart/form-data" >
+                {% csrf_token %}
+            
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Размер печати</label>
+                    <div class="col-sm-10">
+                        {{ form.printSize}}
+                    </div>
+                </div>
+             
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Цвет печати</label>
+                    <div class="col-sm-10">
+                        {{ form.printColor}}
+                    </div>
+                </div>
+                <fieldset class="form-group">
+                    <div class="row">
+                        <label class="col-form-label col-sm-2 pt-0">Тип переплета</label>
+                        <div class="col-sm-10">
+                            {{ form.printBindingType}}
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="form-group row">
+                    <div class="col-sm-2">Цена</div>
+                    <div class="col-sm-10">{{ form.price}}
+                    </div>
+                </div>
+
+                {% comment %} <div class="form-group row">
+                    <div class="col-sm-2">Фото</div>
+                    <div class="col-sm-10">{{ form.photo }}
+                    </div>
+                </div> {% endcomment %}
+
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+                
+
+    {% endblock %}
+    

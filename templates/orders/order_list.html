@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Список заказов</h4>
+                                <button type="button" class="btn btn-rounded btn-primary" data-toggle="modal" data-target="#addorder"><span
+                                    class="btn-icon-left text-primary"><i class="fa fa-plus color-primary"></i>
+                                </span>Добавить</button>
+                            </div>
+                            <div>
+                                
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="example" class="display text-center  " style="min-width: 845px">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th> 
+                                                <th>Клиент</th>
+                                                <th>Продукт</th> 
+                                                <th>Номер заказа</th>
+                                                <th>Создан в</th>
+                                                <th>Файл</th>  
+                                                <th>Количество страниц</th>
+                                                <th>Цена</th>
+                                                <th scope="col">Действие</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center">
+                                            {% for order in order_list %}
+                                            
+                                            <tr >
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ order.created_by }}</td>
+                                                <td></td>
+                                                <td>{{ order.order_number }}</td>
+                                                <td>{{ order.created_at }}</td>
+                                                <td><a href="{{ order.file.url }}">&nbspСкачать</a></td>
+                                                <td>{{ order.page_number }}</td>
+                                                <td>{{ order.price }}</td>
+                                                <td class="text-center">
+                                                    {% if order.order_status is 2 %}
+
+
+                                                    <div>
+                                                        <button type="button" class="btn btn-secondary
+                                                     reject-order" action-url="#">
+                                                            <span class="tf-icons bx bx-trash"></span>&nbsp; Отклонять
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary confirm-order"
+                                                                action-url="#">
+                                                            <span class="tf-icons bx bx-check"></span>&nbsp; Утвердить
+                                                        </button>
+                
+                                                    </div>
+                
+                
+                                                {% elif order.order_status is 4 %}
+                                                    <button type="button" class="btn btn-secondary
+                                                     reject-order disabled" data-reject-id="{{ order.id }}">
+                                                        <span class="tf-icons bx bx-trash"></span>&nbsp; Отклоненный
+                                                    </button>
+                                                {% else %}
+                                                    <button type="button" class="btn btn-primary confirm-order disabled"
+                                                            data-confirm-id="{{ order.id }}">
+                                                        <span class="tf-icons bx bx-check"></span>&nbsp; Подтвержденный
+                                                    </button>
+                
+                                                {% endif %}
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+    {% endblock %}
+    

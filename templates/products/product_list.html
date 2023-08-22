@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Список продуктов</h4>
+                                <button type="button" class="btn btn-rounded btn-primary" data-toggle="modal" data-target="#addProduct"><span
+                                    class="btn-icon-left text-primary"><i class="fa fa-plus color-primary"></i>
+                                </span>Добавить</button>
+                            </div>
+                            <div>
+                                
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="example" class="display text-center  " style="min-width: 845px">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>  
+                                                {% comment %} <th>Фото</th>   {% endcomment %}
+                                                <th>Размер печати</th>
+                                                <th>Цвет печати</th>
+                                                <th>Облошка книг</th>
+                                                <th>Тип переплета</th>
+                                                <th>Цена</th>
+                                                <th>Создан в</th>
+                                                <th scope="col">Действие</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center">
+                                            {% for product in product_list %}
+                                            
+                                            <tr >
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ product.get_printSize_display }}</td>
+                                                <td>{{ product.get_printColor_display }}</td>
+                                                <td>{{ product.get_bookCover_display }}</td>
+                                                <td>{{ product.printBindingType.name }}</td>
+                                                <td>{{ product.price }} сўм </td>
+                                                <td>{{ product.created_at|date:"d-M-Y H:i" }}</td>
+                                                <td class="text-center">
+                                                    {% comment %} data-product-id="{{ product.id }}" data-toggle="modal" data-target="#editProduct" {% endcomment %}
+                                                    <a type="button" class="btn btn-primary" href={%  url 'products:update' product.uuid %} ><i
+                                                        class="fa fa-pencil color-muted"></i></a>
+                                <button type="button" class="btn btn-danger product_delete_button"
+                                data-product-id="{{ product.uuid }}"><i
+                                    class="fa fa-close color-danger"></i></button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="modal fade" id="addProduct">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Добавить продукт</h5>
+                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card">
+                                 
+                                    <div class="card-body">
+                                        <div class="basic-form">
+                                            <form method="POST" action="." enctype="multipart/form-data">
+                                                {% csrf_token %}
+        
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label id="inputState">Размер печати</label>
+                                                        {{ form.printSize}}
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Цвет печати</label>
+                                                        {{ form.printColor}}
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Облошка книг</label>
+                                                        {{ form.bookCover}}
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Тип переплета</label>
+                                                        {{ form.printBindingType}}
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Цена</label>
+                                                        {{ form.price}}
+                                                    </div>
+                                                    {% comment %} <div class="form-group col-md-6">
+                                                        <label>Фото</label>
+                                                        {{ form.photo}}
+                                                    </div> {% endcomment %}
+                                                </div>
+                                    
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal " id="deleteProduct">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Вы действительно хотите удалить этот продукт ?</h5>
+                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                </button>
+                            </div>
+                            
+                            <div class="modal-footer">
+                                <form method="post"
+                                >
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_delete_modal_input"
+                                           id="product_delete_id">
+                                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                            
+                                    <button type="button" class="btn btn-primary"
+                                            data-href-template="{% url 'products:delete' %}"
+                                            id="product_delete_modal_button">Да
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="application/javascript">
+                   
+            
+                    document.addEventListener("DOMContentLoaded", function (event) {
+                        $('.product_delete_button').on('click', (e) => {
+                            document.getElementById('product_delete_id').value = e.target.dataset['productId'];
+                            $('#deleteProduct').modal('show');
+                        })
+                    });
+                    
+                   
+            
+            
+                </script>
+            
+
+    {% endblock %}
+    

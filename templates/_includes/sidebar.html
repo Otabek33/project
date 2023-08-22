@@ -1,0 +1,30 @@
+{% load static %}
+<div class="quixnav">
+    <div class="quixnav-scroll">
+        <ul class="metismenu" id="menu">
+            <li class="nav-label first">Главное меню</li>
+            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                        class="icon icon-single-04"></i><span class="nav-text">Обзорная панель</span></a>
+            
+            </li>
+            <li class="nav-label">Заказы</li>
+            <li><a class="has-arrow" href="{% url 'orders:order_list' %}" aria-expanded="false"><i
+                        class="icon icon-app-store"></i><span class="nav-text">Список заказов</span></a>
+             
+            </li>
+            <li class="nav-label">Клиенты</li>
+            <li><a class="has-arrow" href="{% url 'clients:client_list' %}" aria-expanded="false"><i
+                        class="icon icon-world-2"></i><span class="nav-text">Список клиентов</span></a>
+    
+            </li>
+            <li class="nav-label">Продукты</li>
+            <li><a class="has-arrow" href="{% url 'products:product_list' %}" aria-expanded="false"><i
+                        class="icon icon-form"></i><span class="nav-text">Список продуктов</span></a>
+             
+            </li>
+    
+        </ul>
+    </div>
+
+
+</div>

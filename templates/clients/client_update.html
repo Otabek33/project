@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Обновить клиент</h4>
+    </div>
+    <div class="card-body">
+        <div class="basic-form">
+            <form method="post"  enctype="multipart/form-data" >
+                {% csrf_token %}
+            
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Имя</label>
+                    <div class="col-sm-10">
+                        {{ form.first_name}}
+                    </div>
+                </div>
+             
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Фамилия</label>
+                    <div class="col-sm-10">
+                        {{ form.last_name}}
+                    </div>
+                </div>
+                <fieldset class="form-group">
+                    <div class="row">
+                        <label class="col-form-label col-sm-2 pt-0">Имя пользователя</label>
+                        <div class="col-sm-10">
+                            {{ form.username}}
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="form-group row">
+                    <div class="col-sm-2">ID пользователя</div>
+                    <div class="col-sm-10">{{ form.userId}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">Телефон</div>
+                    <div class="col-sm-10">{{ form.phone}}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-2">Фото</div>
+                    <div class="col-sm-10">{{ form.photo }}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+                
+
+    {% endblock %}
+    
